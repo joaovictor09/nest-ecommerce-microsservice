@@ -1,4 +1,4 @@
-import { Encrypter } from '@/domain/criptography/encrypter';
+import { Encrypter } from '@/application/criptography/encrypter';
 import dayjs from 'dayjs';
 
 export class FakeEncrypter implements Encrypter {

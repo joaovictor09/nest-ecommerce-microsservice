@@ -2,8 +2,9 @@ import { UserRepository } from '@/domain/repositories/user.repository';
 import { LoginUserDTO } from '../dto/login-user.dto';
 import { InvalidCredentialsError } from '../errors/invalid-credentials-error';
 import { Either, left, right } from '../utils/either';
-import { HashComparer } from '@/domain/criptography/hash-comparer';
-import { Encrypter } from '@/domain/criptography/encrypter';
+import { HashComparer } from '@/application/criptography/hash-comparer';
+import { Encrypter } from '@/application/criptography/encrypter';
+import { Injectable } from '@nestjs/common';
 
 type AuthenticateUseCaseResponse = Either<
   InvalidCredentialsError,
@@ -12,6 +13,7 @@ type AuthenticateUseCaseResponse = Either<
   }
 >;
 
+@Injectable()
 export class LoginUserUseCase {
   constructor(
     private readonly usersRepository: UserRepository,
