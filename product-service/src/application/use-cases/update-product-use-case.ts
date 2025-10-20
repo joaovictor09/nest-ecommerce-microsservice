@@ -1,10 +1,15 @@
 import { Product } from "../../domain/entities/product";
 import { ProductRepository } from "../../domain/repositories/product-repository";
 import { UpdateProductDto } from "../dtos/update-product-dto";
+import { ResourceNotFoundError } from "../errors/resource-not-found-error";
+import { Either, left, right } from "../utils/either";
 
-type UpdateProductResponse = {
-  product: Product;
-};
+type UpdateProductResponse = Either<
+  ResourceNotFoundError,
+  {
+    product: Product;
+  }
+>;
 
 export class UpdateProductUseCase {
   constructor(private readonly productRepository: ProductRepository) {}
@@ -15,7 +20,7 @@ export class UpdateProductUseCase {
     const product = await this.productRepository.findById(id);
 
     if (!product) {
-      throw new Error("Product not found!");
+      return left(new ResourceNotFoundError());
     }
 
     if (name) product.name = name;
@@ -24,8 +29,8 @@ export class UpdateProductUseCase {
 
     await this.productRepository.save(product);
 
-    return {
+    return right({
       product,
-    };
+    });
   }
 }
