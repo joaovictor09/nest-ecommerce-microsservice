@@ -5,7 +5,7 @@ export interface ProductProps {
   name: string;
   description: string;
   price: number;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export class Product extends Entity<ProductProps> {
@@ -22,7 +22,13 @@ export class Product extends Entity<ProductProps> {
   }
 
   static create(props: ProductProps, id?: UniqueEntityID) {
-    const product = new Product(props, id);
+    const product = new Product(
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+      },
+      id,
+    );
 
     return product;
   }
